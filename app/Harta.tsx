@@ -7,9 +7,14 @@ import { Ionicons } from '@expo/vector-icons';
 const { width, height } = Dimensions.get('window');
 
 const stores = [
-  { id: 1, name: 'Volta Centru', latitude: 47.0105, longitude: 28.8638 },
-  { id: 2, name: 'Volta Botanica', latitude: 46.982, longitude: 28.861 },
-  { id: 3, name: 'Volta Ciocana', latitude: 47.045, longitude: 28.88 },
+  { id: 1, name: 'Service Centru', latitude: 47.019253274004505, longitude: 28.864151533617296 },
+  { id: 2, name: 'Volta 1', latitude: 46.980650614582785, longitude: 28.890921593605434 },
+  { id: 3, name: 'Volta 2 "Tools"', latitude: 46.99577603566025, longitude: 28.90237267409418 },
+    { id: 4, name: 'Volta 3', latitude: 47.015576198461154, longitude: 28.873610152122808 },
+      { id: 5, name: 'Volta 4', latitude: 47.05245166859262, longitude: 28.85054384711143 },
+        { id: 6, name: 'Volta 5', latitude: 47.042002129366495, longitude: 28.798525077797365 },
+          { id: 7, name: 'Volta 6', latitude: 46.99437774555062, longitude: 28.81509673970665 },
+            { id: 8, name: 'Volta 7', latitude: 46.83412784551735, longitude: 28.610163620117056 },
 ];
 
 const mapStyle = [
