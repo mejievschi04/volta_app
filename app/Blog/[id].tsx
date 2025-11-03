@@ -28,6 +28,17 @@ const POSTS: Record<string, any> = {
     content:
       'O trusă bine pregătită include: multimetrul, clampmetru, detector de tensiune, șurubelnițe izolate, clește de tăiat cabluri, decapator, tester de continuitate, lanternă, mănuși izolate și șorț de protecție. Vom explica când și cum se folosesc acestea.',
   },
+  '4':
+  {id: '4',
+    title: 'Mentenanța retelei electrice: 5 pași esențiali',
+    excerpt: 'Ghid practic pentru verificarea retelei electrice.',
+    date: '2025-07-25',
+    // remote image (transformer / industrial)
+    image:
+      require('../../assets/images/Group 9.png'),
+    content:
+      'Transformatoarele sunt componente critice în rețelele electrice. În acest articol parcurgem 5 pași esențiali: inspectarea vizuală, verificarea conexiunilor, măsurători de izolație, testarea uleiului (dacă este cazul) și planificarea întreținerii preventive. Urmând acești pași reduci riscul de avarii și crești durata de viață a echipamentului.',
+  },
 };
 
 export default function PostDetail() {

@@ -3,19 +3,19 @@ import {
   View,
   Text,
   StyleSheet,
-  Image,
+  ScrollView,
   Pressable,
   Dimensions,
   Platform,
-  Alert,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const ICON_COLOR = '#FFEE00';
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
-const DISCOUNT_CARD_HEIGHT = SCREEN_HEIGHT * 0.25; // 25% of screen height
+const DISCOUNT_CARD_HEIGHT = SCREEN_HEIGHT * 0.25;
 
 export default function Profile() {
   const router = useRouter();
@@ -32,23 +32,12 @@ export default function Profile() {
     </Pressable>
   );
 
-  const confirmLogout = () => {
-    Alert.alert('Confirmare', 'Sigur vrei să ieși din cont?', [
-      { text: 'Anulează', style: 'cancel' },
-      { text: 'Ieși', style: 'destructive', onPress: () => router.replace('/Loading') },
-    ]);
-  };
-
   return (
-    <View style={[styles.container, { paddingTop: insets.top }]}>
-      {/* Top-right logout button */}
-      <Pressable
-        style={[styles.logoutTop, { top: insets.top + 8 }]}
-        onPress={confirmLogout}
-        android_ripple={{ color: 'rgba(255,255,255,0.08)' }}
-      >
-        <MaterialCommunityIcons name="logout" size={18} color="#FFF" />
-      </Pressable>
+    <ScrollView
+      style={[styles.container, { paddingTop: insets.top }]}
+      contentContainerStyle={{ paddingBottom: 40 }}
+      showsVerticalScrollIndicator={false}
+    >
       {/* User Info Section */}
       <View style={styles.userSection}>
         <View style={styles.avatarWrap}>
@@ -77,16 +66,36 @@ export default function Profile() {
       </View>
 
       {/* Discount Card */}
-      <View style={[styles.discountCard, { height: DISCOUNT_CARD_HEIGHT }]}>
+      <LinearGradient
+        colors={['#1a1a1a', '#333300', '#000']}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={[styles.discountCard, { height: DISCOUNT_CARD_HEIGHT }]}
+      >
         <View style={styles.discountContent}>
           <Text style={styles.discountTitle}>Card de reducere</Text>
           <Text style={styles.discountPercentage}>10%</Text>
           <Text style={styles.discountInfo}>Reducere la următoarea cumpărătură</Text>
         </View>
-      </View>
+      </LinearGradient>
 
-      {/* (Logout moved to top-right) */}
-    </View>
+      {/* Istoric cumpărături */}
+      <View style={styles.historySection}>
+        <Text style={styles.historyTitle}>Istoric cumpărături</Text>
+        <View style={styles.historyItem}>
+          <Text style={styles.historyLabel}>30 octombrie 2025</Text>
+          <Text style={styles.historyValue}>1.240 lei</Text>
+        </View>
+        <View style={styles.historyItem}>
+          <Text style={styles.historyLabel}>21 octombrie 2025</Text>
+          <Text style={styles.historyValue}>830 lei</Text>
+        </View>
+        <View style={styles.historyItem}>
+          <Text style={styles.historyLabel}>10 octombrie 2025</Text>
+          <Text style={styles.historyValue}>562 lei</Text>
+        </View>
+      </View>
+    </ScrollView>
   );
 }
 
@@ -146,10 +155,12 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#000',
+    backgroundColor: '#111',
     padding: 16,
     borderRadius: 12,
     marginHorizontal: 4,
+    borderWidth: 1,
+    borderColor: '#222',
   },
   actionLabel: {
     color: '#FFF',
@@ -157,16 +168,20 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   discountCard: {
-    backgroundColor: '#1A2235',
     borderRadius: 16,
-    margin: 16,
+    marginHorizontal: 16,
+    marginBottom: 24,
     padding: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#FFEE00',
     ...Platform.select({
       ios: {
         shadowColor: ICON_COLOR,
         shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.2,
-        shadowRadius: 8,
+        shadowOpacity: 0.3,
+        shadowRadius: 10,
       },
       android: {
         elevation: 8,
@@ -174,8 +189,6 @@ const styles = StyleSheet.create({
     }),
   },
   discountContent: {
-    flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
   },
   discountTitle: {
@@ -193,30 +206,32 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#CCC',
   },
-  logoutButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#2B1B1B',
+  historySection: {
+    backgroundColor: '#111',
     marginHorizontal: 16,
-    marginTop: 'auto',
-    marginBottom: 16,
     padding: 16,
     borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#222',
   },
-  logoutText: {
-    color: '#FFF',
-    marginLeft: 8,
-    fontSize: 16,
+  historyTitle: {
+    color: ICON_COLOR,
+    fontSize: 18,
     fontWeight: '600',
+    marginBottom: 12,
   },
-  logoutTop: {
-    position: 'absolute',
-    right: 12,
-    padding: 8,
-    borderRadius: 20,
-    backgroundColor: 'rgba(43,27,27,0.6)',
-    alignItems: 'center',
-    justifyContent: 'center',
+  historyItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: '#222',
+  },
+  historyLabel: {
+    color: '#EEE',
+  },
+  historyValue: {
+    color: '#00ff88',
+    fontWeight: '600',
   },
 });

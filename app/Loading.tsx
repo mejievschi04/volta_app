@@ -6,12 +6,12 @@ export default function Loading() {
   const router = useRouter();
 
   useEffect(() => {
-    setTimeout(() => router.replace('./Login'), 2000);
+    setTimeout(() => router.replace('./Login'), 3000);
   }, []);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>⚡ Volta App</Text>
+      <Text style={styles.title}>Volta App</Text>
       <ActivityIndicator size="large" color="#FFEE00" />
     </View>
   );
