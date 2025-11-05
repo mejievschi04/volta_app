@@ -5,8 +5,8 @@ import { Ionicons } from '@expo/vector-icons';
 
 export default function EditProfil() {
   const router = useRouter();
-  const [name, setName] = useState('Ion Popescu');
-  const [email, setEmail] = useState('ion.popescu@email.com');
+  const [name, setName] = useState('Ion Mejievschi');
+  const [email, setEmail] = useState('ion.mejievschi@email.com');
   const [password, setPassword] = useState('');
 
   const handleSave = () => {

@@ -6,22 +6,34 @@ import {
   ScrollView,
   Pressable,
   Dimensions,
-  Platform,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
+import DiscountCard from './components/DiscountCard';
 
 const ICON_COLOR = '#FFEE00';
-const { height: SCREEN_HEIGHT } = Dimensions.get('window');
-const DISCOUNT_CARD_HEIGHT = SCREEN_HEIGHT * 0.25;
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
+
+const PURCHASE_HISTORY = [
+  { date: '30 octombrie 2025', amount: 1240 },
+  { date: '21 octombrie 2025', amount: 830 },
+  { date: '10 octombrie 2025', amount: 562 },
+];
 
 export default function Profile() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
 
-  const ActionButton = ({ icon, label, onPress }: { icon: string; label: string; onPress: () => void }) => (
+  const ActionButton = ({
+    icon,
+    label,
+    onPress,
+  }: {
+    icon: string;
+    label: string;
+    onPress: () => void;
+  }) => (
     <Pressable
       style={styles.actionButton}
       onPress={onPress}
@@ -32,13 +44,19 @@ export default function Profile() {
     </Pressable>
   );
 
+  // Calculăm punctele totale
+  const totalPoints = PURCHASE_HISTORY.reduce(
+    (sum, item) => sum + Math.floor(item.amount * 0.05),
+    0
+  );
+
   return (
     <ScrollView
       style={[styles.container, { paddingTop: insets.top }]}
-      contentContainerStyle={{ paddingBottom: 40 }}
+      contentContainerStyle={{ paddingBottom: 50 }}
       showsVerticalScrollIndicator={false}
     >
-      {/* User Info Section */}
+      {/* Secțiune utilizator */}
       <View style={styles.userSection}>
         <View style={styles.avatarWrap}>
           <View style={[styles.avatar, styles.avatarFallback]}>
@@ -51,49 +69,61 @@ export default function Profile() {
         </View>
       </View>
 
-      {/* Actions Section */}
+      {/* Butoane acțiune */}
       <View style={styles.actionsSection}>
-        <ActionButton
-          icon="cog"
-          label="Setări"
-          onPress={() => router.push('/Settings')}
-        />
         <ActionButton
           icon="bell"
           label="Notificări"
           onPress={() => router.push('/Notifications')}
         />
+        <ActionButton
+          icon="cog"
+          label="Setări"
+          onPress={() => router.push('/Settings')}
+        />
       </View>
 
-      {/* Discount Card */}
-      <LinearGradient
-        colors={['#1a1a1a', '#333300', '#000']}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={[styles.discountCard, { height: DISCOUNT_CARD_HEIGHT }]}
-      >
-        <View style={styles.discountContent}>
-          <Text style={styles.discountTitle}>Card de reducere</Text>
-          <Text style={styles.discountPercentage}>10%</Text>
-          <Text style={styles.discountInfo}>Reducere la următoarea cumpărătură</Text>
-        </View>
-      </LinearGradient>
+      {/* Card reducere */}
+      <View style={{ marginHorizontal: 10, marginBottom: 16 }}>
+        <DiscountCard
+          name="MEJIEVSCHI ION"
+          discountValue={10} // reducere
+          cardCode="VOLTA-4587"
+          barcodeValue="458712345678"
+        />
+      </View>
+
+      {/* Puncte totale */}
+      <View style={styles.pointsSection}>
+        <Text style={styles.pointsTitle}>Puncte totale: {totalPoints}</Text>
+        <Text style={styles.pointsInfo}>
+          Poți folosi aceste puncte pentru a obține reduceri suplimentare sau
+          beneficii la următoarele cumpărături.
+        </Text>
+      </View>
 
       {/* Istoric cumpărături */}
       <View style={styles.historySection}>
         <Text style={styles.historyTitle}>Istoric cumpărături</Text>
-        <View style={styles.historyItem}>
-          <Text style={styles.historyLabel}>30 octombrie 2025</Text>
-          <Text style={styles.historyValue}>1.240 lei</Text>
-        </View>
-        <View style={styles.historyItem}>
-          <Text style={styles.historyLabel}>21 octombrie 2025</Text>
-          <Text style={styles.historyValue}>830 lei</Text>
-        </View>
-        <View style={styles.historyItem}>
-          <Text style={styles.historyLabel}>10 octombrie 2025</Text>
-          <Text style={styles.historyValue}>562 lei</Text>
-        </View>
+
+        {PURCHASE_HISTORY.map((item, index) => {
+          const saved = item.amount * 0.1; // Economisit 10%
+          const points = Math.floor(item.amount * 0.05); // Puncte 5%
+          return (
+            <View key={index} style={styles.historyItem}>
+              <View style={styles.historyLeft}>
+                <Text style={styles.historyDate}>{item.date}</Text>
+              </View>
+              <View style={styles.historyRight}>
+                <Text style={styles.historyAmount}>{item.amount} lei</Text>
+                <Text style={styles.historySaved}>
+                  Economisit: {saved.toFixed(2)} lei
+                </Text>
+                <Text style={styles.historyPoints}>Puncte: {points}</Text>
+              </View>
+            </View>
+          );
+        })}
       </View>
     </ScrollView>
   );
@@ -148,17 +178,19 @@ const styles = StyleSheet.create({
   },
   actionsSection: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
     paddingHorizontal: 16,
     marginBottom: 24,
   },
   actionButton: {
-    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#111',
-    padding: 16,
+    padding: 14,
     borderRadius: 12,
-    marginHorizontal: 4,
+    marginBottom: 10,
+    width: '48%',
     borderWidth: 1,
     borderColor: '#222',
   },
@@ -167,44 +199,24 @@ const styles = StyleSheet.create({
     marginLeft: 12,
     fontSize: 16,
   },
-  discountCard: {
-    borderRadius: 16,
+  pointsSection: {
+    backgroundColor: '#111',
     marginHorizontal: 16,
-    marginBottom: 24,
-    padding: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
+    padding: 16,
+    borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#FFEE00',
-    ...Platform.select({
-      ios: {
-        shadowColor: ICON_COLOR,
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 10,
-      },
-      android: {
-        elevation: 8,
-      },
-    }),
+    borderColor: '#222',
+    marginBottom: 24,
   },
-  discountContent: {
-    alignItems: 'center',
-  },
-  discountTitle: {
-    fontSize: 18,
-    color: '#FFF',
-    marginBottom: 12,
-  },
-  discountPercentage: {
-    fontSize: 48,
-    fontWeight: 'bold',
+  pointsTitle: {
     color: ICON_COLOR,
+    fontSize: 18,
+    fontWeight: '600',
     marginBottom: 8,
   },
-  discountInfo: {
-    fontSize: 14,
+  pointsInfo: {
     color: '#CCC',
+    fontSize: 14,
   },
   historySection: {
     backgroundColor: '#111',
@@ -213,6 +225,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderWidth: 1,
     borderColor: '#222',
+    marginBottom: 24,
   },
   historyTitle: {
     color: ICON_COLOR,
@@ -227,11 +240,28 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#222',
   },
-  historyLabel: {
-    color: '#EEE',
+  historyLeft: {
+    width: SCREEN_WIDTH * 0.5,
   },
-  historyValue: {
-    color: '#00ff88',
-    fontWeight: '600',
+  historyRight: {
+    width: SCREEN_WIDTH * 0.55,
+    alignItems: 'flex-end',
+  },
+  historyDate: {
+    color: '#EEE',
+    fontSize: 14,
+  },
+  historyAmount: {
+    color: '#FFEE00',
+    fontWeight: '700',
+    fontSize: 16,
+  },
+  historySaved: {
+    color: '#CCC',
+    fontSize: 12,
+  },
+  historyPoints: {
+    color: '#00FF88',
+    fontSize: 12,
   },
 });

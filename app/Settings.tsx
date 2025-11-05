@@ -83,7 +83,7 @@ export default function Settings() {
         </TouchableOpacity>
 
         {/* Spațiu pentru meniu */}
-        <View style={{ height: 100 }} />
+        <View style={{ height: 80 }} />
       </ScrollView>
     </View>
   );

@@ -19,5 +19,5 @@ const styles = StyleSheet.create({
   // Add a small top padding globally so screen content doesn't start flush
   // with the very top edge on all routes. Screens that already manage
   // safe-area insets may add additional spacing; this is intentionally small.
-  container: { flex: 1, backgroundColor: '#000', paddingTop: 12 },
+  container: { flex: 1, backgroundColor: '#000', paddingTop: 20, paddingBottom: 80 },
 });

@@ -135,10 +135,10 @@ export default function Home() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#000', padding: 20 },
-  headerRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 18 },
+  headerRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 20 },
   greetingWrap: {},
   greeting: { color: '#FFEE00', fontSize: 26, fontWeight: '700' },
-  phone: { color: '#EEE', marginTop: 6, fontSize: 14 },
+  phone: { color: '#EEE', marginTop: 1, fontSize: 14 },
   topButtons: { flexDirection: 'row', alignItems: 'center' },
   iconBtn: { marginLeft: 12, padding: 8, backgroundColor: '#111', borderRadius: 8 },
   icon: { fontSize: 18 },

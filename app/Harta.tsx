@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
   bottomArea: {
     marginTop: 20,
     position: 'absolute',
-    bottom: 140, // suficient cât să nu fie sub meniu
+    bottom: 58, // suficient cât să nu fie sub meniu
   },
   storeButton: {
     borderWidth: 1,
